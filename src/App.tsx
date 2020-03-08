@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from "react";
+import Login from "./components/Login";
+import Layout from "./components/Layout";
+import { AccountContext } from "./components/AccountContext";
+import { getAccount } from "./utils/Auth";
+import TopMenu from "./components/TopMenu";
+import "./App.css";
 
 function App() {
+  const [account] = useContext(AccountContext);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="bp3-dark">
+      {!account && <Login initialLoading={!!getAccount()} />}
+      <TopMenu />
+      <Layout />
     </div>
   );
 }
