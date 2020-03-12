@@ -1,13 +1,13 @@
 import { Tenant } from "../utils/ApiTypes";
 import { Action } from "easy-peasy";
 
-export interface UserModel {
+export interface SelectionModel {
   tenants: Tenant[];
-  setTenants: Action<UserModel, Tenant[]>;
+  setTenants: Action<SelectionModel, Tenant[]>;
   tenantId: string | null;
-  setTenantId: Action<UserModel, string>;
+  setTenantId: Action<SelectionModel, string>;
 }
 
 export interface StoreModel {
-  user: UserModel;
+  selection: SelectionModel;
 }

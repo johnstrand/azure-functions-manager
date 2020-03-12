@@ -13,7 +13,7 @@ const Login = (props: Props) => {
 
   const login = () => {
     setLoading(true);
-    getToken()
+    getToken("common")
       .then(_ => {
         setLoading(false);
       })

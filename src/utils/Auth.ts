@@ -8,9 +8,9 @@ const msalConfig: Configuration = {
   auth: {
     clientId: "6b022eaa-903c-4743-b55e-2e212164eee1",
     authority: "https://login.microsoftonline.com/common",
-    validateAuthority: true,
-    redirectUri: "http://localhost:3000/auth.html",
-    navigateToLoginRequestUrl: true
+    validateAuthority: true
+    /*redirectUri: "http://localhost:3000/auth.html",
+    navigateToLoginRequestUrl: true*/
   },
   cache: {
     cacheLocation: "localStorage",
@@ -40,26 +40,23 @@ export function getAccount() {
   return app.getAccount();
 }
 
-export async function getToken(authority: string = "common"): Promise<string> {
+export async function getToken(authority: string): Promise<string> {
   const request: AuthenticationParameters = {
     scopes: [scopes.azure],
     authority: `https://login.microsoftonline.com/${authority}`,
     redirectUri: "http://localhost:3000/auth.html"
   };
-  if (!app.getAccount()) {
+  if (!app.getAccount() && !app.getLoginInProgress()) {
     await app.loginPopup(request);
   }
   try {
     return (await app.acquireTokenSilent(request)).accessToken;
   } catch (error) {
-    if (typeof error === "object") {
-      return "";
-    }
-    if (requiresInteraction(error)) {
-      await app.loginPopup(request);
-      return await getToken();
-    } else {
+    if (requiresInteraction(error) || error.errorCode === "consent_required") {
       return (await app.acquireTokenPopup(request)).accessToken;
+    } else {
+      alert("Non-interactive error: " + error.errorCode);
+      return "";
     }
   }
 }

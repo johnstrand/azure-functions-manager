@@ -1,7 +1,7 @@
-import { UserModel, StoreModel } from "./Types";
+import { SelectionModel, StoreModel } from "./Types";
 import { action } from "easy-peasy";
 
-const userModel: UserModel = {
+const userModel: SelectionModel = {
   tenantId: null,
   setTenantId: action((state, payload) => {
     state.tenantId = payload;
@@ -9,14 +9,11 @@ const userModel: UserModel = {
   tenants: [],
   setTenants: action((state, payload) => {
     state.tenants = payload;
-    if (payload.length) {
-      state.tenantId = payload[0].tenantId;
-    }
   })
 };
 
 const storeModel: StoreModel = {
-  user: userModel
+  selection: userModel
 };
 
 export default storeModel;

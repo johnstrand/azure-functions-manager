@@ -3,7 +3,7 @@ import { Account } from "msal";
 import { getAccount, getToken } from "../utils/Auth";
 
 type NullableAccount = Account | null;
-type NullableCallback = (() => void) | null;
+type NullableCallback = ((value: any) => void) | null;
 type AccountContextType = [NullableAccount, NullableCallback];
 
 export const AccountContext = createContext<AccountContextType>([null, null]);
@@ -16,7 +16,7 @@ export const AccountContextWrapper = (props: Props) => {
   const [account, setAccount] = useState<NullableAccount>(null);
 
   useEffect(() => {
-    getToken()
+    getToken("common")
       .catch(err => {})
       .then(s => {
         if (!s) {
@@ -28,7 +28,9 @@ export const AccountContextWrapper = (props: Props) => {
   }, []);
 
   return (
-    <AccountContext.Provider value={[account, () => setAccount(getAccount())]}>
+    <AccountContext.Provider
+      value={[account, (value: any) => setAccount(value)]}
+    >
       {props.children}
     </AccountContext.Provider>
   );
