@@ -3,14 +3,15 @@ import {
   UserAgentApplication,
   AuthenticationParameters
 } from "msal";
+import store from "../store";
+
+const tenantId = store.getState().selection.tenantId;
 
 const msalConfig: Configuration = {
   auth: {
     clientId: "6b022eaa-903c-4743-b55e-2e212164eee1",
-    authority: "https://login.microsoftonline.com/common",
+    authority: `https://login.microsoftonline.com/${tenantId}`,
     validateAuthority: true
-    /*redirectUri: "http://localhost:3000/auth.html",
-    navigateToLoginRequestUrl: true*/
   },
   cache: {
     cacheLocation: "localStorage",
@@ -40,10 +41,10 @@ export function getAccount() {
   return app.getAccount();
 }
 
-export async function getToken(authority: string): Promise<string> {
+export async function getToken(): Promise<string> {
   const request: AuthenticationParameters = {
     scopes: [scopes.azure],
-    authority: `https://login.microsoftonline.com/${authority}`,
+    authority: `https://login.microsoftonline.com/${tenantId}`,
     redirectUri: "http://localhost:3000/auth.html"
   };
   if (!app.getAccount() && !app.getLoginInProgress()) {

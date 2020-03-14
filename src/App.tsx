@@ -1,21 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import Login from "./components/Login";
 import Layout from "./components/Layout";
-import { AccountContext } from "./components/AccountContext";
 import { getAccount } from "./utils/Auth";
 import TopMenu from "./components/TopMenu";
 import "./App.css";
-import SelectTenant from "./components/TopMenu/SelectTenant";
 import { useStoreState } from "./store/Hooks";
 
 function App() {
-  const [account] = useContext(AccountContext);
+  const account = getAccount();
   const tenantId = useStoreState(store => store.selection.tenantId);
-  console.log(tenantId);
+  const mustLogin = !account || tenantId === "common";
+
   return (
     <div className="bp3-dark">
-      {!account && <Login initialLoading={!!getAccount()} />}
-      {account && !tenantId && <SelectTenant />}
+      {mustLogin && <Login initialLoading={!!getAccount()} />}
       <TopMenu />
       <Layout />
     </div>

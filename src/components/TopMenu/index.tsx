@@ -1,17 +1,16 @@
 import React from "react";
-import { Navbar, Button } from "@blueprintjs/core";
+import { Navbar } from "@blueprintjs/core";
 import SelectSubscription from "./SelectSubscription";
-import { useStoreActions } from "../../store/Hooks";
+import SelectTenant from "./SelectTenant";
 
 const TopMenu = () => {
-  const setTenantId = useStoreActions(store => store.selection.setTenantId);
   return (
     <Navbar>
       <Navbar.Group>
         <Navbar.Heading>Azure Function Manager</Navbar.Heading>
         <Navbar.Divider />
         <Navbar.Heading>
-          <Button onClick={() => setTenantId("")}>Switch tenant</Button>
+          <SelectTenant />
         </Navbar.Heading>
         <Navbar.Heading>
           <SelectSubscription />

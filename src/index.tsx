@@ -4,16 +4,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { StoreProvider } from "easy-peasy";
 import store from "./store";
-import { AccountContextWrapper } from "./components/AccountContext";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
 ReactDOM.render(
-  <AccountContextWrapper>
-    <StoreProvider store={store}>
-      <App />
-    </StoreProvider>
-  </AccountContextWrapper>,
+  <StoreProvider store={store}>
+    <App />
+  </StoreProvider>,
   document.getElementById("root")
 );
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getToken } from "../utils/Auth";
+import { getToken, getAccount } from "../utils/Auth";
 import { Dialog, Spinner, Button } from "@blueprintjs/core";
 import DialogBody from "./Generic/DialogBody";
 import DialogHeader from "./Generic/DialogHeader";
@@ -10,12 +10,14 @@ interface Props {
 
 const Login = (props: Props) => {
   const [loading, setLoading] = useState(props.initialLoading);
+  const [open, setOpen] = useState(getAccount() === null);
 
   const login = () => {
     setLoading(true);
-    getToken("common")
+    getToken()
       .then(_ => {
         setLoading(false);
+        setOpen(false);
       })
       .catch(() => {
         setLoading(false);
@@ -24,7 +26,7 @@ const Login = (props: Props) => {
   };
 
   return (
-    <Dialog isOpen isCloseButtonShown={false} className="bp3-dark">
+    <Dialog isOpen={open} className="bp3-dark">
       <DialogHeader>Log in required</DialogHeader>
       <DialogBody>
         {!loading && <h2>Please click the button below to log in</h2>}
